@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ProductManagement</string>
+    <string name="ipET">IP value</string>
+    <string name="portET">Port</string>
+    <string name="connectButton">Connect</string>
+    <string name="applicationTitle">Sale Manager</string>
+    <string name="download_products_button">Download Products</string>
+    <string name="upload_sales_button">Upload Sales</string>
+    <string name="next_button">Next</string>
+    <string name="cash_button">Cash</string>
+    <string name="credit_button">Credit</string>
+    <string name="previousButton">Previous</string>
+</resources>

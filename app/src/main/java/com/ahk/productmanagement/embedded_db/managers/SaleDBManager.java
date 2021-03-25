@@ -24,7 +24,7 @@ public class SaleDBManager {
 
     public Boolean save(Sale sale) {
         QueryManager manager = new QueryManager();
-        String sql = "insert into sale values (" + sale.getReceiptCount() + "," + sale.getTotalAmount() + "," + sale.getCashPayment() + "," + sale.getCreditPayment() + ")";
+        String sql = "insert into sale values (" +  1 + "," + sale.getTotalAmount() + "," + sale.getCashPayment() + "," + sale.getCreditPayment() + ")";
         return manager.noResponseQuery(sql, context);
     }
 
@@ -35,9 +35,10 @@ public class SaleDBManager {
             save(sale);
             return false;
         } else {
+            int a = sales.get(0).getReceiptCount()+1;
             String sql = String.format("update sale set receiptCount=%d,totalAmount=%f" +
                             ",cashPayment=%f,creditPayment=%f",
-                    sales.get(0).getReceiptCount()+1,
+                    a,
                     sale.getTotalAmount() + sales.get(0).getTotalAmount(),
                     sale.getCashPayment() + sales.get(0).getCashPayment(),
                     sale.getCreditPayment() + sales.get(0).getCreditPayment());

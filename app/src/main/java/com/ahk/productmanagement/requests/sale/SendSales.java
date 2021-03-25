@@ -19,7 +19,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SendSales implements Runnable, IRequestListener {
+public class SendSales implements Runnable {
     Context context;
 
     List<Sale> sales;
@@ -42,12 +42,12 @@ public class SendSales implements Runnable, IRequestListener {
 
             SaleService apiService = retrofit.create(SaleService.class);
             Call<Boolean> req = apiService.uploadSaleServices(sales);
-
+            SaleDBManager manager = new SaleDBManager(context);
+            manager.deleteAllSales();
             req.enqueue(new Callback<Boolean>() {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     System.out.println(response.body());
-                    onSuccess();
                 }
 
                 @Override
@@ -60,7 +60,6 @@ public class SendSales implements Runnable, IRequestListener {
                 @Override
                 public void run() {
                     //do stuff like remove view etc
-                    onError(null);
                 }
             });
 
@@ -68,17 +67,5 @@ public class SendSales implements Runnable, IRequestListener {
 
     }
 
-    @Override
-    public void onSuccess() {
-        SaleDBManager manager = new SaleDBManager(context);
-        manager.deleteAllSales();
-        Log.i("deleted", "All sales deleted");
-    }
-
-    @Override
-    public void onError(Exception e) {
-        Log.e("blank sale", "sale is blank");
-        Toast.makeText(context, "Sale is blank", Toast.LENGTH_SHORT).show();
-    }
 
 }

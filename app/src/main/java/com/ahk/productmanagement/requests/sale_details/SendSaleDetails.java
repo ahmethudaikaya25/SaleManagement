@@ -20,7 +20,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SendSaleDetails implements Runnable, IRequestListener {
+public class SendSaleDetails implements Runnable {
 
     Context context;
 
@@ -42,12 +42,13 @@ public class SendSaleDetails implements Runnable, IRequestListener {
 
             SaleDetailsService apiService = retrofit.create(SaleDetailsService.class);
             Call<Boolean> req = apiService.uploadSaleDetails(saleDetails);
-
+            SaleDetailsDBManager dm = new SaleDetailsDBManager(context);
+            dm.deleteAllSaleDetails();
             req.enqueue(new Callback<Boolean>() {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     System.out.println(response.body());
-                    onSuccess();
+
                 }
 
                 @Override
@@ -56,27 +57,12 @@ public class SendSaleDetails implements Runnable, IRequestListener {
                 }
             });
         }else {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    //do stuff like remove view etc
-                    onError(null);
-                }
+            new Handler(Looper.getMainLooper()).post(() -> {
+                //do stuff like remove view etc
+
             });
 
         }
     }
-
-    @Override
-    public void onSuccess() {
-        SaleDetailsDBManager dm = new SaleDetailsDBManager(context);
-        dm.deleteAllSaleDetails();
-    }
-
-    @Override
-    public void onError(Exception e) {
-
-    }
-
 
 }
